@@ -1,0 +1,368 @@
+/* Указываем box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Убираем внутренние отступы */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Убираем внешние отступы */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Выставляем основные настройки по-умолчанию для body */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Удаляем стандартную стилизацию для всех ul и il, у которых есть атрибут class*/
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* Элементы a, у которых нет класса, сбрасываем до дефолтных стилей */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Упрощаем работу с изображениями */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Указываем понятную периодичность в потоке данных у article*/
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Наследуем шрифты для инпутов и кнопок */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+.wrapper {
+    display: flex;
+}
+
+/*!--Навигационная секция--start--!*/
+
+.navigation_section {
+    height: 100vh;
+    width: 55px;
+    /* width: 3%; */
+    background-color: #06090E;
+}
+
+.content_navigation_section {
+    padding-top: 15px;
+    display: block
+}
+
+.conteiner__icon {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.navigation__icon {
+    color: gray;
+    padding-bottom: 1.5vh;
+}
+
+/*!--Навигационная секция--end--!*/
+
+
+/*!--Информационная секция--start--!*/
+
+.info_section {
+    height: 100vh;
+    width: 227px;
+    /* width: 12%; */
+    background-color: #171717;
+}
+
+.content_info_section {
+    padding-top: 15px;
+    display: block;
+}
+
+.global_sort__container {
+    width: 100%;
+}
+
+.button_container {
+    display: flex;
+    justify-content: center;
+}
+
+.button__global_sort {
+    display: flex;
+    width: 200px;
+    height: 40px;
+    background-color: #171717;
+    border-radius: 8px;
+    border: none;
+    transition: background-color 0.2s linear;
+}
+
+.button__global_sort:hover {
+    background-color: #303030;
+}
+
+.button__global_sort:active {
+    background-color: #505050;
+}
+
+#icon_sort {
+    color: gray;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.method__gl_sort {
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 10px;
+}
+
+.count__gl_sort {
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.line_info_section {
+    border: 0.5px solid;
+    width: 90%;
+    margin: 1vh auto 1vh auto;
+}
+
+/*!--Информационная секция--end--!*/
+
+
+/*!--Главная секция--start--!*/
+
+.main_section {
+    height: 100vh;
+    width: 55%;
+    background-color: #181818;
+}
+
+.content_main_section {
+    padding-top: 15px;
+}
+
+.dop_information {
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.line_main_section {
+    border: 0.5px solid;
+    width: 100%;
+    margin: 1vh auto 1vh auto;
+}
+
+.notes_container {
+    width: 100%;
+    display: flex;
+}
+
+.plans_container {
+    width: 50%;
+}
+
+.tasks_container {
+    width: 50%;
+}
+
+.title__notes {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* .content__notes {
+
+} */
+
+.plan, .reminder {
+    width: 95%;
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: #181818;
+    transition: background-color 0.2s linear;
+}
+
+.plan:hover, .reminder:hover {
+    background-color: #303030;
+}
+
+#icon_notes_1 {
+    color: gray;
+    margin-left: 15px;
+}
+
+#icon_notes_2 {
+    color: gray;
+}
+
+.title_notes {
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
+    padding-left: 10px;
+}
+
+.task {
+    width: 95%;
+    height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s linear;
+}
+
+.task:hover {
+    background-color: #303030;
+}
+
+.title_task {
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
+    padding-left: 10px;
+}
+
+.diving__line {
+    width: 1px;
+    height: 100vh;
+    border: solid 1px;
+}
+
+/*!--Главная секция--end--!*/
+
+
+/*!--Детальная секция--start--!*/
+
+.detail_section {
+    height: 100vh;
+    width: 30%;
+    background-color: #181818;
+}
+
+.content_detail_section {
+    padding-top: 12px;
+}
+
+.header__detail_section {
+    display: flex;
+    align-items: center;
+}
+
+#icon_notes {
+    color: gray;
+}
+
+.line_header {
+    width: 0.5px;
+    height: 20px;
+    border: solid 0.5px;
+    margin: 15px 0px 15px 0px;
+}
+
+.data__notes {
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: 400;
+}
+
+.line_detail_section {
+    width: 100%;
+    border: solid 1px;
+}
+
+.title__detail_notes {
+    padding-left: 20px;
+}
+
+.title__detail {
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 600;
+    padding-top: 15px;
+}
+
+.content__detail_notes {
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.content__detail {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/*!--Детальная секция--end--!*/
+
+
+
+.button__sort {
+    border: none;
+    background-color: #303030;
+}
+
+.button__sort_1 {
+    border: none;
+    background-color: #303030;
+    margin-left: 150px;
+}
+
+.button__delete {
+    border: none;
+    background-color: #303030;
+}
+
+.button__complete {
+    border: none;
+    background-color: #303030;
+}
