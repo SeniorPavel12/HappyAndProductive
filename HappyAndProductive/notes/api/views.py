@@ -1,4 +1,5 @@
 from django.http import Http404
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,6 +31,22 @@ class ReminderAPIView(APIView):
             return Response(json_reminder.data)
         return Response(serializer.errors)
 
+    def put(self, request, pk):
+        data = request.data
+        reminder = get_reminder(pk=pk)
+        serializer = ReminderDeleteSerializer(data=data, partial=True)
+        if serializer.is_valid():
+            update_reminder = serializer.save(instance=reminder)
+            json_reminder = self.serializer_class(update_reminder)
+            return Response(json_reminder.data)
+        return Response(serializer.errors)
+
+    def delete(self, request, pk):
+        obj = get_reminder(pk)
+        delete_objects(obj)
+        response = {"pk": f"{pk}"}
+        return Response(response)
+
 
 class PlanAPIView(APIView):
     serializer_class = PlanSerializer
@@ -53,37 +70,21 @@ class PlanAPIView(APIView):
             return Response(json_plan.data)
         return Response(serializer.errors)
 
-
-class TimerAPIView(APIView):
-    serializer_class = TimerSerializer
-
-    def patch(self, request, pk):
-        if not is_valid_uuid(pk):
-            raise Http404
-        plan = get_plan(pk)
-        serializer = self.serializer_class(data=request.data)
+    def put(self, request, pk):
+        data = request.data
+        plan = get_plan(pk=pk)
+        serializer = PlanDeleteSerializer(data=data, partial=True)
         if serializer.is_valid():
-            timer = serializer.save()
-            update_timer(plan, timer)
-            json_timer = self.serializer_class(timer)
-            return Response(json_timer.data)
+            update_plan = serializer.save(instance=plan)
+            json_plan = self.serializer_class(update_plan)
+            return Response(json_plan.data)
         return Response(serializer.errors)
 
-
-class ScheduleAPIView(APIView):
-    serializer_class = ScheduleSerializer
-
-    def patch(self, request, pk):
-        schedule = get_schedule(pk)
-        serializer = self.serializer_class(schedule, data=request.data, partial=True)
-        if serializer.is_valid():
-            update_schedule = serializer.save()
-            json_schedule = ScheduleSerializer(update_schedule)
-            return Response(json_schedule.data)
-        return Response(serializer.errors)
-
-    def delete(self, request):
-        pass
+    def delete(self, request, pk):
+        obj = get_plan(pk)
+        delete_objects(obj)
+        response = {"pk":f"{pk}"}
+        return Response(response)
 
 
 class GroupAPIView(APIView):
@@ -102,3 +103,87 @@ class GroupAPIView(APIView):
             json_group = self.serializer_class(update_group)
             return Response(json_group.data)
         return Response(serializer.errors)
+
+    def delete(self, request, pk):
+        group = get_group(pk)
+        delete_objects(group)
+        return Response({"pk":f"{pk}"})
+
+
+class TimerAPIView(APIView):
+    serializer_class = TimerSerializer
+
+    def get(self, request, pk):
+        timer = get_timer(pk)
+        json_timer = self.serializer_class(timer)
+        return Response(json_timer.data)
+
+    def patch(self, request, pk):
+        if not is_valid_uuid(pk):
+            raise Http404
+        timer = get_timer(pk)
+        serializer = self.serializer_class(timer, data=request.data, partial=True)
+        if serializer.is_valid():
+            update_timer = serializer.save()
+            json_timer = self.serializer_class(update_timer)
+            return Response(json_timer.data)
+        return Response(serializer.errors)
+
+
+class NotificationsAPIView(APIView):
+    serializer_class = NotificationsSerializer
+
+    def get(self, request, pk):
+        notification = get_notification(pk)
+        json_notification = self.serializer_class(notification)
+        return Response(json_notification.data)
+
+    def patch(self, request, pk):
+        notification = get_notification(pk)
+        serializer = ScheduleSerializer(notification, data=request.data, partial=True)
+        if serializer.is_valid():
+            notification_group = serializer.save()
+            json_notification = self.serializer_class(notification_group)
+            return Response(json_notification.data)
+        return Response(serializer.errors)
+
+    def delete(self, request, pk):
+        notification = get_notification(pk)
+        delete_objects(notification)
+        return Response({"pk":f"{pk}"})
+
+
+class ScheduleAPIView(APIView):
+    serializer_class = ScheduleSerializer
+
+    def get(self, request, pk):
+        print(request.user)
+        schedule = get_schedule(pk)
+        json_schedule = self.serializer_class(schedule)
+        return Response(json_schedule.data)
+
+    def put(self, request, pk):
+        data = request.data
+        schedule = get_schedule(pk=pk)
+        serializer = ScheduleDeleteSerializer(data=data, partial=True)
+        if serializer.is_valid():
+            update_schedule = serializer.save(instance=schedule)
+            json_schedule = self.serializer_class(update_schedule)
+            return Response(json_schedule.data)
+        return Response(serializer.errors)
+
+    def patch(self, request, pk):
+        schedule = get_schedule(pk)
+        serializer = self.serializer_class(schedule, data=request.data, partial=True)
+        if serializer.is_valid():
+            update_schedule = serializer.save()
+            json_schedule = ScheduleSerializer(update_schedule)
+            return Response(json_schedule.data)
+        return Response(serializer.errors)
+
+    def delete(self, request, pk):
+        schedule = get_schedule(pk)
+        delete_objects(schedule)
+        return Response({"pk": f"{pk}"})
+
+

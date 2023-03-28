@@ -52,6 +52,7 @@ def get_objects_m2m_or_m2o(validated_data, model):
     objects = []
     for d in validated_data:
         id = d['id']
+        print(model, id)
         objects.append(model.objects.get(pk=id))
     return objects
 

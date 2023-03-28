@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from calendar import monthrange
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import APIException
 
@@ -54,9 +55,34 @@ def get_all_schedule():
 
 
 def get_schedule(pk):
-    return ScheduleModel.objects.get(pk=pk)
+    try:
+        return ScheduleModel.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        raise APIException("Matching query does not exist")
 
 
 def get_group(pk):
-    return GroupModel.objects.get(pk=pk)
+    try:
+        return GroupModel.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        raise APIException("Matching query does not exist")
+
+
+def get_notification(pk):
+    try:
+        return NotificationsModel.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        raise APIException("Matching query does not exist")
+
+
+def get_timer(pk):
+    try:
+        return TimerModel.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        raise APIException("Matching query does not exist")
+
+
+def delete_objects(obj):
+    obj.delete()
+
 

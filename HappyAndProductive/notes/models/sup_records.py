@@ -13,6 +13,7 @@ class NotificationsModel(models.Model):
         COMPLETED = 'COMPLETED', _('COMPLETED')
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='notifications', null=True)
     time_reaction = models.DateTimeField()
     description = models.TextField(null=True)
     condition = models.CharField(max_length=11, choices=ConditionChoices.choices, default=ConditionChoices.UNFULFILLED)
@@ -23,6 +24,7 @@ class NotificationsModel(models.Model):
 
 class GroupModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='group', null=True)
     color = models.CharField(max_length=9, unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField(null=True)

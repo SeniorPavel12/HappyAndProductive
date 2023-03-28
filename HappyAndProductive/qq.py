@@ -238,6 +238,14 @@ from time import timezone
     "description":"Первое напоминание"
 }
 '''
+#User
+'''
+{
+"username":"json_user",
+"password":"123456789!",
+"email":"pavelvel12@yandex.ru"
+}
+'''
 # ПРОВЕРИТЬ МЕТОД CLEAR В МОДЕЛИ SCHEDULEMODEL ТАМ ВОЗНИКАЕТ ОШИБКА ИЗ ЗА ИСПОЛЬЗОВАНИЯ ADD ДО СОХРАНЕНИЯ ОБЪЕКТА
 # print(type(datetime.datetime.now().date()))
 
@@ -245,4 +253,5 @@ from time import timezone
 # y = {1, 2, 3, 4, 5, 6, 7}
 # print(y.difference(x))
 # print(datetime.datetime.now())
-print(uuid.uuid4())
+x = {'a': 1}
+print(x['b'])

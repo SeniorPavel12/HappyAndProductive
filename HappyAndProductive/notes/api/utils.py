@@ -31,9 +31,3 @@ def check_valid_condition(condition):
         return 'UNFULFILLED'
     else:
         raise APIException
-
-
-def update_timer(plan, timer):
-    plan.info.timer = timer
-
-

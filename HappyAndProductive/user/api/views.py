@@ -1,14 +1,16 @@
-from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.contrib.auth import get_user_model, login
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.renderers import BrowsableAPIRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from user.api.serializers import UserRegisterSerializer
+from user.api.service import create_user
 
 
 from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
 from rest_framework.schemas import ManualSchema
@@ -20,33 +22,8 @@ class ObtainAuthToken(APIView):
     throttle_classes = ()
     permission_classes = ()
     parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.BrowsableAPIRenderer,)
+    renderer_classes = (renderers.JSONRenderer,)
     serializer_class = AuthTokenSerializer
-
-    if coreapi_schema.is_enabled():
-        schema = ManualSchema(
-            fields=[
-                coreapi.Field(
-                    name="username",
-                    required=True,
-                    location='form',
-                    schema=coreschema.String(
-                        title="Username",
-                        description="Valid username for authentication",
-                    ),
-                ),
-                coreapi.Field(
-                    name="password",
-                    required=True,
-                    location='form',
-                    schema=coreschema.String(
-                        title="Password",
-                        description="Valid password for authentication",
-                    ),
-                ),
-            ],
-            encoding="application/json",
-        )
 
     def get_serializer_context(self):
         return {
@@ -63,9 +40,17 @@ class ObtainAuthToken(APIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        login(request, user)
         token, created = Token.objects.get_or_create(user=user)
-        print(token.key)
+        print({'token': token.key})
         return Response({'token': token.key})
 
 
-obtain_auth_token = ObtainAuthToken.as_view()
+class RegisterAPIView(APIView):
+    serializer_class = UserRegisterSerializer
+
+    def post(self, request):
+        data = request.data
+        user = create_user(data)
+        json_register_data = self.serializer_class(user)
+        return Response(json_register_data.data)

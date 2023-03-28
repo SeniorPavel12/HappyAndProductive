@@ -42,20 +42,22 @@ class ScheduleDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduleDayModel
         fields = ('id', 'week', 'title_day', 'description', 'condition', 'execution_time', 'start_time', 'end_time')
+        read_only_fields = ('week', )
         list_serializer_class = ScheduleDayUpdateListSerializer
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
     days = ScheduleDaySerializer(partial=True, many=True)
+    group = serializers.ListSerializer(child=serializers.PrimaryKeyRelatedField(queryset=GroupModel.objects.all()), required=False)
 
     def create(self, validated_data):
         name_serializer = {'days': (ScheduleDaySerializer, True)}
-        name_id = {}
+        name_id = {'group': (GroupModel, True)}
         return create_model(validated_data, name_serializer, name_id, self, ScheduleModel)
 
     def update(self, instance, validated_data):
         name_serializer = {'days': (ScheduleDaySerializer, True)}
-        name_id = {}
+        name_id = {'group': (GroupModel, True)}
         return partial_model_update(instance, validated_data, name_serializer, name_id, self)
 
     def validate_day(self, value):

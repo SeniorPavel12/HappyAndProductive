@@ -14,6 +14,7 @@ urlpatterns = [
     path('reminder/<slug:pk>/', ReminderAPIView.as_view()),
     path('plan/<slug:pk>/', PlanAPIView.as_view()),
     path('timer/<slug:pk>/', TimerAPIView.as_view()),
+    path('notification/<slug:pk>', NotificationsAPIView.as_view()),
     path('group/<slug:pk>/', GroupAPIView.as_view()),
     path('schedule/<slug:pk>', ScheduleAPIView.as_view()),
 ]

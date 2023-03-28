@@ -50,6 +50,8 @@ class ScheduleModel(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     title = models.CharField(max_length=40)
     description = models.TextField(null=True)
+    user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='schedule', null=True)
+    group = models.ManyToManyField('notes.GroupModel', related_name='schedule')
 
     def __str__(self):
         return self.title

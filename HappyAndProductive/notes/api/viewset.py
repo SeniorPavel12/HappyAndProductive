@@ -22,7 +22,7 @@ class InitialViewSet(ViewSet):
         return Response(all_records)
 
     @action(detail=False, methods=['get'])
-    def get_all_category(self, request):
+    def get_all_groups(self, request):
         groups = get_all_group()
         json_group = GroupSerializer(groups, many=True)
         return Response(json_group.data)
@@ -41,7 +41,7 @@ class CreateViewSet(ViewSet):
 
     @action(detail=False, methods=['post'])
     def create_reminder(self, request):
-        serializer = ReminderSerializer(data=request.data)
+        serializer = ReminderSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             reminder = serializer.save()
             json_reminder = ReminderSerializer(reminder)
@@ -50,7 +50,7 @@ class CreateViewSet(ViewSet):
 
     @action(detail=False, methods=['post'])
     def create_plan(self, request):
-        serializer = PlanSerializer(data=request.data)
+        serializer = PlanSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             plan = serializer.save()
             json_plan = PlanSerializer(plan)
@@ -59,7 +59,7 @@ class CreateViewSet(ViewSet):
 
     @action(detail=False, methods=['post'])
     def create_group(self, request):
-        serializer = GroupSerializer(data=request.data)
+        serializer = GroupSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             group = serializer.save()
             json_group = GroupSerializer(group)
@@ -67,8 +67,17 @@ class CreateViewSet(ViewSet):
         return Response(serializer.errors)
 
     @action(detail=False, methods=['post'])
+    def create_notification(self, request):
+        serializer = NotificationsSerializer(data=request.data, partial=True)
+        if serializer.is_valid():
+            notifications = serializer.save()
+            json_notifications = NotificationsSerializer(notifications)
+            return Response(json_notifications.data)
+        return Response(serializer.errors)
+
+    @action(detail=False, methods=['post'])
     def create_schedule(self, request):
-        serializer = ScheduleSerializer(data=request.data)
+        serializer = ScheduleSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             schedule = serializer.save()
             json_schedule = ScheduleSerializer(schedule)
