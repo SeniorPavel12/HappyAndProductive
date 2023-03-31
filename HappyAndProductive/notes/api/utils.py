@@ -14,7 +14,7 @@ def is_valid_uuid(string):
 
 
 def check_valid_period(period):
-    valid_period = ['day', 'month', 'condition']
+    valid_period = ['day', 'month', 'week']
     if period in valid_period:
         return period
     elif period is None:

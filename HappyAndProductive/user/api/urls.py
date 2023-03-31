@@ -1,9 +1,12 @@
 from django.urls import path
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from user.api.views import *
 
 urlpatterns = [
-    path('login_user/', ObtainAuthToken.as_view()),
-    path('create_user/', RegisterAPIView.as_view()),
+    path('update_token/', TokenRefreshView.as_view()),
+    path('login_user/', TokenObtainPairView.as_view()),
+    path('create_user/', CreateUserAPIView.as_view()),
+    path('logout_user/', LogoutUserAPIView.as_view()),
+    path('test/', TestAPIView.as_view()),
 ]

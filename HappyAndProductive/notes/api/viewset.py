@@ -46,7 +46,7 @@ class CreateViewSet(ViewSet):
             reminder = serializer.save()
             json_reminder = ReminderSerializer(reminder)
             return Response(json_reminder.data)
-        return serializer.errors
+        return Response(serializer.errors)
 
     @action(detail=False, methods=['post'])
     def create_plan(self, request):

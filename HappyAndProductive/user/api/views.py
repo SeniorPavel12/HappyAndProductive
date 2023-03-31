@@ -1,56 +1,86 @@
-from django.contrib.auth import get_user_model, login
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.renderers import BrowsableAPIRenderer
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.contrib.auth import logout
+from django.utils.module_loading import import_string
+from rest_framework import generics, status
+from rest_framework_simplejwt.authentication import AUTH_HEADER_TYPES
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.settings import api_settings
 
 from user.api.serializers import UserRegisterSerializer
 from user.api.service import create_user
 
-
-from rest_framework import parsers, renderers
-from rest_framework.authtoken.models import Token
-from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
-from rest_framework.schemas import ManualSchema
-from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.views import APIView
 
-
-class ObtainAuthToken(APIView):
-    throttle_classes = ()
+class CreateUserAPIView(APIView):
     permission_classes = ()
-    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.JSONRenderer,)
-    serializer_class = AuthTokenSerializer
-
-    def get_serializer_context(self):
-        return {
-            'request': self.request,
-            'format': self.format_kwarg,
-            'view': self
-        }
-
-    def get_serializer(self, *args, **kwargs):
-        kwargs['context'] = self.get_serializer_context()
-        return self.serializer_class(*args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        token, created = Token.objects.get_or_create(user=user)
-        print({'token': token.key})
-        return Response({'token': token.key})
-
-
-class RegisterAPIView(APIView):
     serializer_class = UserRegisterSerializer
 
     def post(self, request):
         data = request.data
-        user = create_user(data)
+        try:
+            user = create_user(data)
+        except ValueError as err:
+            return Response({'error': 'user with this name already exists'})
         json_register_data = self.serializer_class(user)
+
         return Response(json_register_data.data)
+
+
+class LogoutUserAPIView(APIView):
+
+    def post(self, request):
+        logout(request)
+        return Response()
+
+
+class TokenViewBase(generics.GenericAPIView):
+    permission_classes = ()
+    authentication_classes = ()
+
+    serializer_class = None
+    _serializer_class = ""
+
+    www_authenticate_realm = "api"
+
+    def get_serializer_class(self):
+        """
+        If serializer_class is set, use it directly. Otherwise get the class from settings.
+        """
+
+        if self.serializer_class:
+            return self.serializer_class
+        try:
+            return import_string(self._serializer_class)
+        except ImportError:
+            msg = "Could not import serializer '%s'" % self._serializer_class
+            raise ImportError(msg)
+
+    def get_authenticate_header(self, request):
+        return '{} realm="{}"'.format(
+            AUTH_HEADER_TYPES[0],
+            self.www_authenticate_realm,
+        )
+
+    def post(self, request, *args, **kwargs):
+        print(11111111111111)
+        serializer = self.get_serializer(data=request.data)
+        print(222222222222222)
+        try:
+            print(33333333333333)
+            serializer.is_valid(raise_exception=True)
+            print(44444444444444444)
+        except TokenError as e:
+            print(4.55555555555)
+            raise InvalidToken(e.args[0])
+        print(55555555555555555555)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+class TokenObtainPairView(TokenViewBase):
+    """
+    Takes a set of user credentials and returns an access and refresh JSON web
+    token pair to prove the authentication of those credentials.
+    """
+
+    _serializer_class = api_settings.TOKEN_OBTAIN_SERIALIZER
+
+

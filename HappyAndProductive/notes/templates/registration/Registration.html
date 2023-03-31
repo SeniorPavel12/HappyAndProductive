@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'registration/style/style.css' %}">
+    <title>Registration</title>
+</head>
+<body>
+    <div class="wrapper">
+        <form action="#" id="form" class="form__body">
+            <h1>Registration</h1>
+            <input type="text" name="name" id="formName" class="form__input" placeholder="Name*:">
+            <input type="text" name="password" id="formPass" class="form__input" placeholder="Password*:">
+            <button type="submit" class="form__button">Registration</button>
+        </form>
+        <h1>-------------------------</h1>
+        <button type="submit" class="form__button_logout">Logout</button>
+        <h1>-------------------------</h1>
+        <button type="submit" class="form__button_test">Test</button>
+    </div>
+    1212
+    <script type="module" src="{% static 'registration/js/test.js' %}"></script>
+</body>
+</html>

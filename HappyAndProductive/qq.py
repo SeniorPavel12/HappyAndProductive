@@ -253,5 +253,8 @@ from time import timezone
 # y = {1, 2, 3, 4, 5, 6, 7}
 # print(y.difference(x))
 # print(datetime.datetime.now())
-x = {'a': 1}
-print(x['b'])
+class Car:
+    pass
+
+c = Car()
+print(type(c), Car)

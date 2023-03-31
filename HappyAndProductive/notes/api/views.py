@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,6 +12,9 @@ from notes.api.utils import *
 
 class ReminderAPIView(APIView):
     serializer_class = ReminderSerializer
+
+    # def get_view_description(self, html=False):
+    #     return description
 
     def get(self, request, pk):
         if not is_valid_uuid(pk):
