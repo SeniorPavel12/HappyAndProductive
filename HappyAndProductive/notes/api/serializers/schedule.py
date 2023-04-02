@@ -71,4 +71,4 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ScheduleModel
-        exclude = ()
+        exclude = ('user', )

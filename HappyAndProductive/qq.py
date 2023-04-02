@@ -253,8 +253,61 @@ from time import timezone
 # y = {1, 2, 3, 4, 5, 6, 7}
 # print(y.difference(x))
 # print(datetime.datetime.now())
-class Car:
-    pass
+# class Car:
+#     pass
+#
+# c = Car()
+# print(type(c), Car)
 
-c = Car()
-print(type(c), Car)
+# infinity = float("inf")
+# graph = {'sta': {'a': 5, 'b': 2},
+#          'a': {'c': 4, 'd': 2   },
+#          'b': {'a': 8, 'd': 7},
+#          'c': {'d': 6, 'fin': 3},
+#          'd': {'fin': 1},
+#          'fin': {}
+#          }
+# costs = {
+#     'a': 5,
+#     'b': 2,
+#     'c': infinity,
+#     'd': infinity,
+#     'fin': infinity,
+# }
+#
+# parents = {
+#     'a': 'sta',
+#     'b': 'sta',
+#     'c': None,
+#     'd': None,
+#     'fin': None,
+# }
+# processed = []
+#
+#
+# def ind_lowest_cost_node(costs):
+#     lowest_cost = float("inf")
+#     lowest_cost_node = None
+#     for node in costs:
+#         cost = costs[node]
+#         if cost < lowest_cost and node not in processed:
+#             lowest_cost = cost
+#             lowest_cost_node = node
+#     return lowest_cost_node
+#
+#
+# node = ind_lowest_cost_node(costs)
+# while node is not None:
+#     print(costs)
+#     cost = costs[node]
+#     par = graph[node]
+#     for p in par.keys():
+#         new_cost = cost + par[p]
+#         if new_cost < costs[p]:
+#             costs[p] = new_cost
+#             parents[p] = node
+#     processed.append(node)
+#     node = ind_lowest_cost_node(costs)
+# print(parents)
+
+print(time.time())

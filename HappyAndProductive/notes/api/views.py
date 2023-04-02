@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from notes.api.api_view_descroption import all_apiview_description
 from notes.api.serializers import *
 from notes.api.service import *
 from notes.api.utils import *
@@ -13,8 +14,8 @@ from notes.api.utils import *
 class ReminderAPIView(APIView):
     serializer_class = ReminderSerializer
 
-    # def get_view_description(self, html=False):
-    #     return description
+    def get_view_description(self, html=False):
+        return all_apiview_description['reminder']
 
     def get(self, request, pk):
         if not is_valid_uuid(pk):
@@ -55,6 +56,9 @@ class ReminderAPIView(APIView):
 class PlanAPIView(APIView):
     serializer_class = PlanSerializer
 
+    def get_view_description(self, html=False):
+        return all_apiview_description['plan']
+
     def get(self, request, pk):
         if not is_valid_uuid(pk):
             raise Http404
@@ -94,6 +98,9 @@ class PlanAPIView(APIView):
 class GroupAPIView(APIView):
     serializer_class = GroupSerializer
 
+    def get_view_description(self, html=False):
+        return all_apiview_description['group']
+
     def get(self, request, pk):
         group = get_group(pk)
         json_group = self.serializer_class(group)
@@ -117,6 +124,9 @@ class GroupAPIView(APIView):
 class TimerAPIView(APIView):
     serializer_class = TimerSerializer
 
+    def get_view_description(self, html=False):
+        return all_apiview_description['timer']
+
     def get(self, request, pk):
         timer = get_timer(pk)
         json_timer = self.serializer_class(timer)
@@ -136,6 +146,9 @@ class TimerAPIView(APIView):
 
 class NotificationsAPIView(APIView):
     serializer_class = NotificationsSerializer
+
+    def get_view_description(self, html=False):
+        return all_apiview_description['notifications']
 
     def get(self, request, pk):
         notification = get_notification(pk)
@@ -159,6 +172,9 @@ class NotificationsAPIView(APIView):
 
 class ScheduleAPIView(APIView):
     serializer_class = ScheduleSerializer
+
+    def get_view_description(self, html=False):
+        return all_apiview_description['schedule']
 
     def get(self, request, pk):
         print(request.user)

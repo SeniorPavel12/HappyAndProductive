@@ -17,20 +17,15 @@ def get_plan(pk):
 
 
 def get_records_for_period(time_period=None, status=None):
-    print(time_period)
     day = date.today()
     reminders, plans = ReminderModel.objects.all(), PlanModel.objects.all()
-    print(reminders, plans)
     if time_period is not None:
-        print(33333333333)
         if time_period == 'week':
             reminders = ReminderModel.objects.filter(info__date_completion__range=(day - timedelta(days=day.weekday()), day + timedelta(days=6 - day.weekday())))
             plans = PlanModel.objects.filter(info__date_completion__range=(day - timedelta(days=day.weekday()), day + timedelta(days=6 - day.weekday())))
         elif time_period == 'month':
-            print(444444444444)
             reminders = ReminderModel.objects.filter(info__date_completion__range=(day - datetime.timedelta(days=day.day), day + datetime.timedelta(days=monthrange(day.year, day.month)[1] - day.day)))
             plans = PlanModel.objects.filter(info__date_completion__range=(day - timedelta(days=day.day), day + timedelta(days=monthrange(day.year, day.month)[1] - day.day)))
-            print(plans, reminders)
         elif time_period == 'day':
             reminders = ReminderModel.objects.filter(info__date_completion=day)
             plans = PlanModel.objects.filter(info__date_completion=day)
@@ -91,3 +86,10 @@ def delete_objects(obj):
     obj.delete()
 
 
+def get_schedule_for_group(group_id):
+    try:
+        group = GroupModel.objects.get(group_id)
+    except ObjectDoesNotExist:
+        raise APIException("Matching query does not exist")
+
+    schedules = ScheduleModel.objects.filter(group=1)

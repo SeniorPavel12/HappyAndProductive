@@ -25,7 +25,7 @@ class NotificationsModel(models.Model):
 class GroupModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     user = models.ForeignKey('user.User', on_delete=models.CASCADE, related_name='group', null=True)
-    color = models.CharField(max_length=9, unique=True)
+    color = models.CharField(max_length=9, unique=True, blank=False, null=False)
     title = models.CharField(max_length=100)
     description = models.TextField(null=True)
 

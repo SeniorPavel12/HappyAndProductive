@@ -5,17 +5,16 @@ from rest_framework.exceptions import APIException
 
 
 def create_user(data):
-    try:
-        username = data['username']
-        password = data['password']
-    except KeyError:
+
+    if 'username' not in data or 'password' not in data:
         msg = "The username and password fields are required"
-        raise APIException(msg)
+        return {"detail": msg}
+    username = data['username']
+    password = data['password']
     try:
+        user = get_user_model().objects.get(pk=username)
+    except get_user_model().DoesNotExist:
         user = get_user_model().objects.create_user(username=username, password=password)
-    except IntegrityError as err:
-        raise ValueError(_("user already exists"))
-    if 'email' in data.keys():
-        user.email = data['email']
-    user.save()
-    return user
+        return user
+    msg = "User with this name already exists"
+    return {"detail": msg}

@@ -5,12 +5,16 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+from .api_view_descroption import all_apiview_description
 from .serializers import *
 from .service import *
 from .utils import *
 
 
 class InitialViewSet(ViewSet):
+
+    def get_view_description(self, html=False):
+        return all_apiview_description['initial_window']
 
     @action(detail=False, methods=['get'])
     def get_records_for_period(self, request):
@@ -38,6 +42,9 @@ class InitialViewSet(ViewSet):
 
 
 class CreateViewSet(ViewSet):
+
+    def get_view_description(self, html=False):
+        return all_apiview_description['create_records']
 
     @action(detail=False, methods=['post'])
     def create_reminder(self, request):
@@ -87,8 +94,13 @@ class CreateViewSet(ViewSet):
 
 class ScheduleViewSet(ViewSet):
 
+    def get_view_description(self, html=False):
+        return all_apiview_description['actions_schedule']
+
     @action(detail=False, methods=['get'])
     def get_all_schedules(self, request):
         schedules = get_all_schedule()
         json_schedule = ScheduleSerializer(schedules, many=True)
         return Response(json_schedule.data)
+
+

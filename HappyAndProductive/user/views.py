@@ -9,15 +9,9 @@ from user.forms import UserRegisterForm, UserLoginForm
 
 class UserProfileView(View):
     def get(self, request):
-        print(request.user.is_authenticated)
-        return HttpResponse("<h1>Profile</h1>")
+        return render(request, 'user/Profile.html')
 
 
-class RegistrationView(View):
+class AuthenticationView(View):
     def get(self, request):
-        return render(request, 'registration/Registration.html')
-
-
-class LoginView(View):
-    def get(self, request):
-        return render(request, 'registration/Login.html')
+        return render(request, 'user/Authentication.html')
